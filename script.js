@@ -1,63 +1,68 @@
-body {
-    background: #fdf2f4;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+const profiles = [
+    { name: "Sarah, 22", bio: "Love traveling and coffee. Let's chat!", img: "https://i.pravatar.cc/400?img=5", gender: "female" },
+    { name: "Jessica, 24", bio: "Artist and dreamer. Looking for a muse.", img: "https://i.pravatar.cc/400?img=9", gender: "female" },
+    { name: "Mike, 26", bio: "Fitness enthusiast. Let's hit the gym!", img: "https://i.pravatar.cc/400?img=11", gender: "male" },
+    { name: "Kevin, 23", bio: "Gamer and tech geek. Let's play!", img: "https://i.pravatar.cc/400?img=13", gender: "male" }
+];
+
+let currentIndex = 0;
+let currentMatch = null;
+
+function showDiscovery() {
+    const name = document.getElementById('user-name').value;
+    if (!name) return alert("Enter your name!");
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('discovery-screen').classList.remove('hidden');
+    renderProfile();
 }
 
-.container {
-    background: white;
-    width: 90%;
-    max-width: 380px;
-    height: 600px;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+function renderProfile() {
+    const genderPref = document.getElementById('user-gender').value;
+    const filtered = profiles.filter(p => p.gender === genderPref);
+    
+    if (currentIndex >= filtered.length) currentIndex = 0;
+    currentMatch = filtered[currentIndex];
+    
+    document.getElementById('disc-img').src = currentMatch.img;
+    document.getElementById('disc-name').innerText = currentMatch.name;
+    document.getElementById('disc-bio').innerText = currentMatch.bio;
 }
 
-.hidden { display: none !important; }
-.heart { font-size: 40px; text-align: center; }
-h1 { text-align: center; color: #ff4b6e; }
-
-/* Discovery Card */
-.profile-card {
-    flex: 1;
-    background: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
+function nextProfile() {
+    currentIndex++;
+    renderProfile();
 }
-.profile-card img { width: 100%; height: 300px; object-fit: cover; }
-.disc-info { padding: 15px; text-align: left; }
-.disc-actions { display: flex; justify-content: space-around; padding: 20px; }
 
-.action-btn {
-    width: 60px; height: 60px; border-radius: 50%; border: none;
-    font-size: 24px; cursor: pointer; transition: 0.3s;
+function checkMatch() {
+    // 100% Match Rate for the simulation!
+    document.getElementById('discovery-screen').classList.add('hidden');
+    document.getElementById('chat-screen').classList.remove('hidden');
+    document.getElementById('chat-with-name').innerText = currentMatch.name;
+    document.getElementById('chat-avatar').src = currentMatch.img;
+    
+    addMessage("It's a Match! Say hi to " + currentMatch.name, 'received');
 }
-.dislike { background: #eee; color: #555; }
-.like { background: #ff4b6e; color: white; }
 
-/* Chat Styles */
-.chat-header { display: flex; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.chat-avatar { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
-.chat-box { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; }
-.msg { padding: 10px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; }
-.sent { align-self: flex-end; background: #ff4b6e; color: white; }
-.received { align-self: flex-start; background: #f1f1f1; color: #333; }
+function sendMessage() {
+    const input = document.getElementById('msg-input');
+    const text = input.value.trim();
+    if (!text) return;
 
-.chat-input { display: flex; padding-top: 10px; }
-.chat-input input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
-.chat-input button { background: #ff4b6e; color: white; border: none; border-radius: 50%; width: 40px; margin-left: 5px; }
+    addMessage(text, 'sent');
+    input.value = "";
 
-.btn-main { background: #ff4b6e; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; }
-input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+    // Simulated Bot Reply
+    setTimeout(() => {
+        const replies = ["Hey! How are you?", "I'm so glad we matched!", "What are you up to today?", "You have a great profile!"];
+        addMessage(replies[Math.floor(Math.random() * replies.length)], 'received');
+    }, 1500);
+}
+
+function addMessage(text, type) {
+    const box = document.getElementById('chat-box');
+    const div = document.createElement('div');
+    div.className = `msg ${type}`;
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
