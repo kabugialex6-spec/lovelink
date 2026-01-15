@@ -4,141 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Love Link | Official Cloud Matchmaker</title>
-    <meta name="description" content="Find your match in the Love Link Vault. A secure, cloud-based dating tool to connect people instantly.">
-    <meta name="keywords" content="Love Link, Matchmaker, Dating Vault, Find Love Online">
+    <meta name="google-site-verification" content="8061c3e3e71e2220" />
 
+    <title>Love Link | Secure Matchmaker</title>
+    <link rel="stylesheet" href="style.css">
+    
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px;
-        }
-        .register-container { 
-            background: white; padding: 30px; border-radius: 15px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center;
-        }
-        #vault-count {
-            font-size: 12px; color: #ff4d6d; font-weight: bold; 
-            margin-bottom: 15px; background: #fff0f3; 
-            padding: 8px 15px; border-radius: 20px;
-            display: inline-block; border: 1px solid #ffccd5;
-        }
-        h2 { color: #ff4d6d; margin: 5px 0; }
-        p.subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        
-        @keyframes heartPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .match-style { 
-            background: #fff; border: 3px solid #ff4d6d; color: #ff4d6d; 
-            animation: heartPulse 0.6s infinite ease-in-out;
-            padding: 15px; border-radius: 10px; margin-top: 20px;
-        }
-        .match-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ff4d6d; margin: 10px 0; }
-        button { background: #ff4d6d; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 16px; transition: 0.3s; }
-        button:disabled { background: #ccc; }
-        #display-result { margin-top: 20px; display: none; width: 100%; }
-        .file-label { display: block; text-align: left; font-size: 12px; color: #666; margin-top: 10px; }
-        .success-text { background: rgba(255,255,255,0.7); padding: 15px; border-radius: 10px; font-weight: bold; color: #d63384; }
+        body { font-family: sans-serif; text-align: center; background-color: #fff5f7; color: #333; padding: 50px; }
+        .container { border: 2px solid #ff4b6e; border-radius: 15px; padding: 20px; display: inline-block; background: white; }
+        h1 { color: #ff4b6e; }
+        .btn { background: #ff4b6e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="register-container">
-    <div id="vault-count">🛰️ CONNECTING...</div>
-    <h2>❤️ Love Link</h2>
-    <p class="subtitle">Join the vault to find your match</p>
-    
-    <input type="text" id="reg-name" placeholder="Full Name">
-    <input type="number" id="reg-age" placeholder="Age">
-    <select id="reg-gender">
-        <option value="" disabled selected>Your Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-    </select>
-    <input type="text" id="reg-contact" placeholder="WhatsApp Number">
-    
-    <label class="file-label">Upload Profile Photo:</label>
-    <input type="file" id="reg-photo" accept="image/*">
+    <div class="container">
+        <h1>❤️ Love Link</h1>
+        <p>Welcome to your secure matchmaking vault.</p>
+        <p id="status">System Status: 🟢 Online</p>
+        <button class="btn" onclick="alert('Searching for links...')">Find a Match</button>
+    </div>
 
-    <button id="btn-submit">FIND MY MATCH</button>
-
-    <div id="display-result"></div>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-    import { getDatabase, ref, push, get, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAJ8R2pAU2FHsjjO-OSyf8NrZ6xyNhfKcg",
-        authDomain: "lovelink-68b63.firebaseapp.com",
-        databaseURL: "https://lovelink-68b63-default-rtdb.firebaseio.com",
-        projectId: "lovelink-68b63",
-        storageBucket: "lovelink-68b63.firebasestorage.app",
-        messagingSenderId: "602358188318",
-        appId: "1:602358188318:web:28f1ad66f035d6f034610f",
-        measurementId: "G-D553FKQKN7"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const vaultRef = ref(db, 'vault');
-
-    // Live Counter
-    onValue(vaultRef, (snapshot) => {
-        const data = snapshot.val();
-        const count = data ? Object.keys(data).length : 0;
-        document.getElementById('vault-count').innerText = `🔥 ${count} PEOPLE IN THE VAULT`;
-    });
-
-    async function handleSubmission() {
-        const name = document.getElementById('reg-name').value;
-        const age = parseInt(document.getElementById('reg-age').value);
-        const gender = document.getElementById('reg-gender').value;
-        const contact = document.getElementById('reg-contact').value;
-        const photoInput = document.getElementById('reg-photo');
-        const resultDiv = document.getElementById('display-result');
-        const btn = document.getElementById('btn-submit');
-
-        if(!name || !age || !gender || !contact || !photoInput.files[0]) {
-            alert("Please fill everything!");
-            return;
-        }
-
-        btn.innerText = "Searching...";
-        btn.disabled = true;
-
-        const reader = new FileReader();
-        reader.readAsDataURL(photoInput.files[0]);
-        reader.onload = async function () {
-            const photoData = reader.result;
-            try {
-                const snapshot = await get(vaultRef);
-                const vaultData = snapshot.val() || {};
-                const vaultArray = Object.values(vaultData);
-
-                const match = vaultArray.find(p => p.gender !== gender && Math.abs(p.age - age) <= 3);
-
-                resultDiv.style.display = "block";
-                if (match) {
-                    resultDiv.className = "match-style";
-                    resultDiv.innerHTML = `<strong>💖 MATCH FOUND!</strong><br><img src="${match.photo}" class="match-photo"><br>Meet ${match.name} (${match.age}y)<br>Contact: <b>${match.contact}</b>`;
-                } else {
-                    await push(vaultRef, { name, age, gender, contact, photo: photoData });
-                    resultDiv.className = "success-text";
-                    resultDiv.innerHTML = `Linked to Cloud!<br>Waiting for a partner...`;
-                }
-            } catch (e) { console.error(e); }
-            btn.innerText = "FIND MY MATCH";
-            btn.disabled = false;
-        };
-    }
-    document.getElementById('btn-submit').addEventListener('click', handleSubmission);
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
