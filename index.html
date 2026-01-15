@@ -3,67 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Link | Premium Match</title>
+    <title>Love Link | Video Match</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container" id="login-screen">
         <div class="heart">❤️</div>
-        <h1>Create Profile</h1>
-        <p>Enter your details to find a match.</p>
+        <h1>Love Link</h1>
+        <p>Enter details to find a video match.</p>
 
-        <div class="form-group">
+        <div class="form-box">
             <input type="text" id="name" placeholder="Full Name">
-        </div>
-
-        <div class="form-group">
-            <input type="number" id="age" placeholder="Age" min="18" max="99">
+            <input type="number" id="age" placeholder="Age">
             <select id="gender">
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="">I am looking for...</option>
+                <option value="female">Women</option>
+                <option value="male">Men</option>
             </select>
-        </div>
-
-        <div class="form-group">
             <input type="tel" id="phone" placeholder="Phone Number">
-        </div>
-
-        <div class="form-group file-upload">
-            <label for="photo">📸 Upload Profile Picture</label>
-            <input type="file" id="photo" accept="image/*">
-        </div>
-        
-        <img id="my-photo-preview" class="profile-pic hidden" src="" alt="My Photo">
-
-        <button class="btn" onclick="findMatch()">Find My Match</button>
-        <p id="status"></p>
-    </div>
-
-    <div class="container hidden" id="chat-screen">
-        <div class="match-header">
-            <h2>It's a Match! 🎉</h2>
-            <div class="match-info">
-                <img id="match-img" src="" alt="Match Photo" class="profile-pic">
-                <div>
-                    <h3 id="match-name">Name</h3>
-                    <p id="match-details">Age • Location</p>
-                </div>
+            
+            <div class="file-input">
+                <label for="photo">📸 Upload Profile Photo</label>
+                <input type="file" id="photo" accept="image/*">
             </div>
         </div>
 
-        <div id="chat-box" class="chat-box">
-            <div class="msg received">👋 Hi! I saw your profile and we matched!</div>
-        </div>
-
-        <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Type a message...">
-            <button class="send-btn" onclick="sendMessage()">➤</button>
-        </div>
-        
-        <button class="btn-small" onclick="location.reload()">Start Over</button>
+        <button class="btn-main" onclick="findMatch()">Find Video Match</button>
+        <p id="status"></p>
     </div>
+
+    <div id="call-screen" class="hidden">
+        <div class="video-wrapper">
+            <video id="match-video" class="main-video" playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-bed-talking-on-video-call-43053-large.mp4" type="video/mp4">
+            </video>
+
+            <div class="selfie-view" id="selfie">
+                <span id="selfie-text">Camera On</span>
+            </div>
+
+            <div class="ui-overlay">
+                <h2 id="display-name">Sarah</h2>
+                <div id="call-timer">Calling...</div>
+                
+                <div class="controls">
+                    <div class="end-call" onclick="endCall()">📞</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="ringtone" src="https://assets.mixkit.co/active_storage/sfx/1359/1359-preview.mp3" loop></audio>
 
     <script src="script.js"></script>
 </body>
