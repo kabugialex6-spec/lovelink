@@ -1,0 +1,62 @@
+/* Love Link Professional Styling */
+body {
+    background: linear-gradient(135deg, #ffeef2 0%, #ffd1dc 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(255, 75, 110, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+h1 {
+    color: #ff4b6e;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#status {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    background: #ff4b6e;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 75, 110, 0.3);
+}
+
+.btn:hover {
+    background: #e33e5f;
+    transform: translateY(-2px);
+}
+
+/* Heart Animation */
+.heart {
+    color: #ff4b6e;
+    font-size: 50px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
