@@ -3,23 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find your perfect match securely in the cloud.">
-    <title>Love Link | Secure Matchmaker</title>
+    <title>Love Link | Premium Match</title>
     <link rel="stylesheet" href="style.css">
-    </head>
+</head>
 <body>
 
-    <div class="container">
+    <div class="container" id="login-screen">
         <div class="heart">❤️</div>
-        <h1>Love Link</h1>
-        <p>Welcome to your secure matchmaking vault.</p>
+        <h1>Create Profile</h1>
+        <p>Enter your details to find a match.</p>
+
+        <div class="form-group">
+            <input type="text" id="name" placeholder="Full Name">
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="age" placeholder="Age" min="18" max="99">
+            <select id="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input type="tel" id="phone" placeholder="Phone Number">
+        </div>
+
+        <div class="form-group file-upload">
+            <label for="photo">📸 Upload Profile Picture</label>
+            <input type="file" id="photo" accept="image/*">
+        </div>
         
-        <div id="status">System Status: 🟢 Online</div>
+        <img id="my-photo-preview" class="profile-pic hidden" src="" alt="My Photo">
 
-        <input type="text" id="username" placeholder="Enter your name here..." autocomplete="off">
-        <br>
+        <button class="btn" onclick="findMatch()">Find My Match</button>
+        <p id="status"></p>
+    </div>
 
-        <button class="btn">Find a Match</button>
+    <div class="container hidden" id="chat-screen">
+        <div class="match-header">
+            <h2>It's a Match! 🎉</h2>
+            <div class="match-info">
+                <img id="match-img" src="" alt="Match Photo" class="profile-pic">
+                <div>
+                    <h3 id="match-name">Name</h3>
+                    <p id="match-details">Age • Location</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-box" class="chat-box">
+            <div class="msg received">👋 Hi! I saw your profile and we matched!</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="msg-input" placeholder="Type a message...">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+        
+        <button class="btn-small" onclick="location.reload()">Start Over</button>
     </div>
 
     <script src="script.js"></script>
