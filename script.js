@@ -1,83 +1,63 @@
-const fakeProfiles = [
-    { name: "Sarah", video: "https://v.ftcdn.net/05/56/80/74/700_F_556807491_S6PshMvBv99z9BvR9yv8S98S9W5S9B.mp4", gender: "female" },
-    { name: "Mike", video: "https://v.ftcdn.net/02/10/53/33/700_F_210533315_S9vS9S9vS9vS9vS9vS9v.mp4", gender: "male" }
-];
-
-let callTimer;
-
-function findMatch() {
-    const name = document.getElementById('name').value;
-    const gender = document.getElementById('gender').value;
-
-    if (!name || !gender) {
-        alert("Please fill in your Name and Gender!");
-        return;
-    }
-
-    document.getElementById('status').innerText = "🔍 Connecting to secure video server...";
-
-    setTimeout(() => {
-        const match = fakeProfiles.find(p => p.gender === gender) || fakeProfiles[0];
-        initiateCall(match);
-    }, 2000);
+body {
+    background: #fdf2f4;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-function initiateCall(match) {
-    const ringtone = document.getElementById('ringtone');
-    const video = document.getElementById('match-video');
-    
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('call-screen').classList.remove('hidden');
-    document.getElementById('display-name').innerText = match.name;
-    
-    // Set video source
-    video.src = match.video;
-    video.load();
-    
-    // 🔊 START RINGTONE
-    ringtone.play().catch(e => console.log("Audio blocked by browser"));
-
-    // Answer after 5 seconds
-    setTimeout(() => {
-        ringtone.pause();
-        
-        // 🎥 FORCE VIDEO PLAY
-        video.muted = true; // Mute first to bypass browser blocks
-        video.play().then(() => {
-            video.muted = false; // Unmute once playing
-        }).catch(err => {
-            console.log("Video failed to play:", err);
-            document.getElementById('call-timer').innerText = "Video Error - Tap Screen";
-        });
-
-        document.getElementById('call-timer').innerText = "00:00";
-        startClock();
-    }, 5000);
+.container {
+    background: white;
+    width: 90%;
+    max-width: 380px;
+    height: 600px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-function startClock() {
-    let sec = 0;
-    callTimer = setInterval(() => {
-        sec++;
-        let m = Math.floor(sec / 60).toString().padStart(2, '0');
-        let s = (sec % 60).toString().padStart(2, '0');
-        document.getElementById('call-timer').innerText = `${m}:${s}`;
-    }, 1000);
-}
+.hidden { display: none !important; }
+.heart { font-size: 40px; text-align: center; }
+h1 { text-align: center; color: #ff4b6e; }
 
-function endCall() {
-    location.reload();
+/* Discovery Card */
+.profile-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
 }
+.profile-card img { width: 100%; height: 300px; object-fit: cover; }
+.disc-info { padding: 15px; text-align: left; }
+.disc-actions { display: flex; justify-content: space-around; padding: 20px; }
 
-// User Photo Preview
-document.getElementById('photo').addEventListener('change', function(e) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const selfie = document.getElementById('selfie');
-        selfie.style.backgroundImage = `url(${event.target.result})`;
-        selfie.style.backgroundSize = 'cover';
-        selfie.style.backgroundPosition = 'center';
-        document.getElementById('selfie-text').style.display = 'none';
-    };
-    reader.readAsDataURL(e.target.files[0]);
-});
+.action-btn {
+    width: 60px; height: 60px; border-radius: 50%; border: none;
+    font-size: 24px; cursor: pointer; transition: 0.3s;
+}
+.dislike { background: #eee; color: #555; }
+.like { background: #ff4b6e; color: white; }
+
+/* Chat Styles */
+.chat-header { display: flex; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.chat-avatar { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+.chat-box { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; }
+.msg { padding: 10px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; }
+.sent { align-self: flex-end; background: #ff4b6e; color: white; }
+.received { align-self: flex-start; background: #f1f1f1; color: #333; }
+
+.chat-input { display: flex; padding-top: 10px; }
+.chat-input input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+.chat-input button { background: #ff4b6e; color: white; border: none; border-radius: 50%; width: 40px; margin-left: 5px; }
+
+.btn-main { background: #ff4b6e; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; }
+input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
