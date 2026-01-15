@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="google-site-verification" content="8061c3e3e71e2220" />
-
+    <meta name="description" content="Find your perfect match securely in the cloud.">
     <title>Love Link | Secure Matchmaker</title>
     <link rel="stylesheet" href="style.css">
-    
-    <style>
-        body { font-family: sans-serif; text-align: center; background-color: #fff5f7; color: #333; padding: 50px; }
-        .container { border: 2px solid #ff4b6e; border-radius: 15px; padding: 20px; display: inline-block; background: white; }
-        h1 { color: #ff4b6e; }
-        .btn { background: #ff4b6e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    </style>
-</head>
+    </head>
 <body>
 
     <div class="container">
-        <h1>❤️ Love Link</h1>
+        <div class="heart">❤️</div>
+        <h1>Love Link</h1>
         <p>Welcome to your secure matchmaking vault.</p>
-        <p id="status">System Status: 🟢 Online</p>
-        <button class="btn" onclick="alert('Searching for links...')">Find a Match</button>
+        
+        <div id="status">System Status: 🟢 Online</div>
+
+        <input type="text" id="username" placeholder="Enter your name here..." autocomplete="off">
+        <br>
+
+        <button class="btn">Find a Match</button>
     </div>
 
     <script src="script.js"></script>
