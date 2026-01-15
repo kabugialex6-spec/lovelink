@@ -1,90 +1,71 @@
-// Database of FAKE profiles (Simulating a server)
 const fakeProfiles = [
-    { name: "Sarah", age: 22, img: "https://i.pravatar.cc/150?img=5", gender: "female" },
-    { name: "Jessica", age: 24, img: "https://i.pravatar.cc/150?img=9", gender: "female" },
-    { name: "Emily", age: 21, img: "https://i.pravatar.cc/150?img=1", gender: "female" },
-    { name: "Mike", age: 25, img: "https://i.pravatar.cc/150?img=11", gender: "male" },
-    { name: "Kevin", age: 23, img: "https://i.pravatar.cc/150?img=13", gender: "male" },
-    { name: "Daniel", age: 26, img: "https://i.pravatar.cc/150?img=3", gender: "male" }
+    { name: "Sarah", video: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-bed-talking-on-video-call-43053-large.mp4", gender: "female" },
+    { name: "Mike", video: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-and-talking-41865-large.mp4", gender: "male" }
 ];
 
-// Handle Photo Upload Preview
-document.getElementById('photo').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.getElementById('my-photo-preview');
-            img.src = e.target.result;
-            img.classList.remove('hidden');
-        }
-        reader.readAsDataURL(file);
-    }
-});
+let callTimer;
 
 function findMatch() {
     const name = document.getElementById('name').value;
-    const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
-    const status = document.getElementById('status');
 
-    if (!name || !age || !gender) {
-        alert("Please fill in all details!");
+    if (!name || !gender) {
+        alert("Please fill in your Name and Gender choice!");
         return;
     }
 
-    // Show loading
-    status.innerText = "🔍 Uploading profile & scanning database...";
-    status.style.color = "#ff4b6e";
+    document.getElementById('status').innerText = "🔍 Finding a match...";
 
     setTimeout(() => {
-        // FILTER: Pick a match opposite to selected gender
-        const targetGender = gender === "male" ? "female" : "male";
-        const possibleMatches = fakeProfiles.filter(p => p.gender === targetGender);
-        
-        // Pick random match
-        const match = possibleMatches[Math.floor(Math.random() * possibleMatches.length)] || fakeProfiles[0];
-
-        // Switch Screens
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('chat-screen').style.display = 'block';
-
-        // Setup Chat Header
-        document.getElementById('match-name').innerText = match.name;
-        document.getElementById('match-details').innerText = `${match.age} years old • Online`;
-        document.getElementById('match-img').src = match.img;
-
-    }, 3000);
+        const match = fakeProfiles.find(p => p.gender === gender) || fakeProfiles[0];
+        initiateCall(match);
+    }, 2500);
 }
 
-function sendMessage() {
-    const input = document.getElementById('msg-input');
-    const msg = input.value.trim();
-    if (!msg) return;
+function initiateCall(match) {
+    const ringtone = document.getElementById('ringtone');
+    const video = document.getElementById('match-video');
+    
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('call-screen').classList.remove('hidden');
+    document.getElementById('display-name').innerText = match.name;
+    video.querySelector('source').src = match.video;
+    video.load();
 
-    // 1. Add User Message
-    addMessage(msg, 'sent');
-    input.value = "";
+    ringtone.play();
 
-    // 2. Simulate Bot Typing/Reply
+    // Answer after 5 seconds
     setTimeout(() => {
-        const replies = [
-            "That's so interesting! Tell me more? 😊",
-            "Haha, you're funny!",
-            "I'm looking for a serious relationship. What about you?",
-            "Can I have your WhatsApp number?",
-            "You seem really nice! ❤️"
-        ];
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-        addMessage(randomReply, 'received');
-    }, 1500 + Math.random() * 2000);
+        ringtone.pause();
+        video.play();
+        document.getElementById('call-timer').innerText = "00:00";
+        startClock();
+    }, 5000);
 }
 
-function addMessage(text, type) {
-    const chatBox = document.getElementById('chat-box');
-    const div = document.createElement('div');
-    div.className = `msg ${type}`;
-    div.innerText = text;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll to bottom
+function startClock() {
+    let sec = 0;
+    callTimer = setInterval(() => {
+        sec++;
+        let m = Math.floor(sec / 60).toString().padStart(2, '0');
+        let s = (sec % 60).toString().padStart(2, '0');
+        document.getElementById('call-timer').innerText = `${m}:${s}`;
+    }, 1000);
 }
+
+function endCall() {
+    clearInterval(callTimer);
+    location.reload();
+}
+
+// Preview Uploaded Photo in the small window
+document.getElementById('photo').addEventListener('change', function(e) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const selfie = document.getElementById('selfie');
+        selfie.style.backgroundImage = `url(${event.target.result})`;
+        selfie.style.backgroundSize = 'cover';
+        document.getElementById('selfie-text').style.display = 'none';
+    };
+    reader.readAsDataURL(e.target.files[0]);
+});
