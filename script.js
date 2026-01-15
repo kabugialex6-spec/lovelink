@@ -1,6 +1,6 @@
 const fakeProfiles = [
-    { name: "Sarah", video: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-bed-talking-on-video-call-43053-large.mp4", gender: "female" },
-    { name: "Mike", video: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-and-talking-41865-large.mp4", gender: "male" }
+    { name: "Sarah", video: "https://v.ftcdn.net/05/56/80/74/700_F_556807491_S6PshMvBv99z9BvR9yv8S98S9W5S9B.mp4", gender: "female" },
+    { name: "Mike", video: "https://v.ftcdn.net/02/10/53/33/700_F_210533315_S9vS9S9vS9vS9vS9vS9v.mp4", gender: "male" }
 ];
 
 let callTimer;
@@ -10,16 +10,16 @@ function findMatch() {
     const gender = document.getElementById('gender').value;
 
     if (!name || !gender) {
-        alert("Please fill in your Name and Gender choice!");
+        alert("Please fill in your Name and Gender!");
         return;
     }
 
-    document.getElementById('status').innerText = "🔍 Finding a match...";
+    document.getElementById('status').innerText = "🔍 Connecting to secure video server...";
 
     setTimeout(() => {
         const match = fakeProfiles.find(p => p.gender === gender) || fakeProfiles[0];
         initiateCall(match);
-    }, 2500);
+    }, 2000);
 }
 
 function initiateCall(match) {
@@ -29,15 +29,27 @@ function initiateCall(match) {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('call-screen').classList.remove('hidden');
     document.getElementById('display-name').innerText = match.name;
-    video.querySelector('source').src = match.video;
+    
+    // Set video source
+    video.src = match.video;
     video.load();
-
-    ringtone.play();
+    
+    // 🔊 START RINGTONE
+    ringtone.play().catch(e => console.log("Audio blocked by browser"));
 
     // Answer after 5 seconds
     setTimeout(() => {
         ringtone.pause();
-        video.play();
+        
+        // 🎥 FORCE VIDEO PLAY
+        video.muted = true; // Mute first to bypass browser blocks
+        video.play().then(() => {
+            video.muted = false; // Unmute once playing
+        }).catch(err => {
+            console.log("Video failed to play:", err);
+            document.getElementById('call-timer').innerText = "Video Error - Tap Screen";
+        });
+
         document.getElementById('call-timer').innerText = "00:00";
         startClock();
     }, 5000);
@@ -54,17 +66,17 @@ function startClock() {
 }
 
 function endCall() {
-    clearInterval(callTimer);
     location.reload();
 }
 
-// Preview Uploaded Photo in the small window
+// User Photo Preview
 document.getElementById('photo').addEventListener('change', function(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
         const selfie = document.getElementById('selfie');
         selfie.style.backgroundImage = `url(${event.target.result})`;
         selfie.style.backgroundSize = 'cover';
+        selfie.style.backgroundPosition = 'center';
         document.getElementById('selfie-text').style.display = 'none';
     };
     reader.readAsDataURL(e.target.files[0]);
