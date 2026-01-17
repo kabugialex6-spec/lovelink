@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Link | Discover & Chat</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Add Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Inline critical CSS for stability */
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
@@ -17,27 +20,32 @@
         <p class="subtitle">Join the secure dating vault.</p>
         
         <div class="form-group">
-            <div class="input-with-icon">
-                <i class="fas fa-user"></i>
-                <input type="text" id="user-name" placeholder="Your Name">
-            </div>
-            
-            <div class="input-with-icon">
-                <i class="fas fa-heart"></i>
-                <select id="user-gender">
-                    <option value="">I am looking for...</option>
-                    <option value="female">Women</option>
-                    <option value="male">Men</option>
-                </select>
-            </div>
-            
-            <button class="btn-main" onclick="showDiscovery()">
-                <i class="fas fa-lock"></i> Enter Vault
-            </button>
+            <input type="text" id="user-name" placeholder="Your Name" autocomplete="off">
+            <select id="user-gender">
+                <option value="">I am looking for...</option>
+                <option value="female">Women</option>
+                <option value="male">Men</option>
+            </select>
+            <button class="btn-main" onclick="showDiscovery()">Enter Vault</button>
         </div>
         
         <div class="login-footer">
-            <p>By continuing, you agree to our <a href="#" onclick="showTerms()">Terms & Privacy</a></p>
+            <p>By continuing, you agree to our <a href="terms.html" target="_blank">Terms</a> & <a href="privacy.html" target="_blank">Privacy</a></p>
+        </div>
+        
+        <div class="app-footer">
+            <div class="footer-links">
+                <a href="privacy.html" target="_blank">Privacy</a>
+                <span class="footer-divider">•</span>
+                <a href="terms.html" target="_blank">Terms</a>
+                <span class="footer-divider">•</span>
+                <a href="safety.html" target="_blank">Safety</a>
+                <span class="footer-divider">•</span>
+                <a href="faq.html" target="_blank">FAQ</a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2026 Love Link</p>
+            </div>
         </div>
     </div>
 
@@ -48,44 +56,31 @@
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h3>Discover Matches</h3>
-            <div class="header-actions">
-                <span class="match-count" id="match-count">0 matches</span>
-            </div>
+            <span class="match-count" id="match-count">0 matches</span>
         </div>
         
         <div id="profile-card" class="profile-card">
-            <!-- Profile Image with gradient background for emoji -->
             <div class="profile-image" id="disc-img">
                 <span id="profile-emoji">👤</span>
             </div>
             
             <div class="disc-info">
-                <div class="name-age">
-                    <h2 id="disc-name">Loading...</h2>
-                    <span class="age" id="disc-age">24</span>
-                </div>
+                <h2 id="disc-name">Loading...</h2>
                 <p id="disc-bio">Looking for someone special...</p>
                 
-                <!-- Interests Tags -->
                 <div class="interests" id="disc-interests">
-                    <span class="interest-tag">Travel</span>
-                    <span class="interest-tag">Music</span>
-                    <span class="interest-tag">Coffee</span>
+                    <!-- Interests added by JS -->
                 </div>
                 
-                <!-- Distance/Status -->
                 <div class="profile-footer">
-                    <span class="location"><i class="fas fa-map-marker-alt"></i> 5 miles away</span>
-                    <span class="status online"><i class="fas fa-circle"></i> Online now</span>
+                    <span class="location"><i class="fas fa-map-marker-alt"></i> Nearby</span>
+                    <span class="status online"><i class="fas fa-circle"></i> Online</span>
                 </div>
             </div>
             
             <div class="disc-actions">
                 <button class="action-btn dislike" onclick="swipeLeft()">
                     <i class="fas fa-times"></i>
-                </button>
-                <button class="action-btn super-like" onclick="superLike()">
-                    <i class="fas fa-star"></i>
                 </button>
                 <button class="action-btn like" onclick="swipeRight()">
                     <i class="fas fa-heart"></i>
@@ -95,10 +90,21 @@
         
         <div class="discovery-footer">
             <p>Swipe right to like, left to pass</p>
-            <div class="progress-bar">
-                <div class="progress" id="swipe-progress" style="width: 0%"></div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
             </div>
-            <p><span id="profiles-left">5</span> profiles remaining today</p>
+        </div>
+        
+        <div class="app-footer">
+            <div class="footer-links">
+                <a href="privacy.html" target="_blank">Privacy</a>
+                <span class="footer-divider">•</span>
+                <a href="terms.html" target="_blank">Terms</a>
+                <span class="footer-divider">•</span>
+                <a href="safety.html" target="_blank">Safety</a>
+                <span class="footer-divider">•</span>
+                <a href="faq.html" target="_blank">FAQ</a>
+            </div>
         </div>
     </div>
 
@@ -109,32 +115,22 @@
                 <i class="fas fa-arrow-left"></i>
             </button>
             
-            <div class="chat-user-avatar" id="chat-avatar">
-                <span id="chat-emoji">👤</span>
-            </div>
-            
             <div class="chat-user-info">
-                <h4 id="chat-with-name">Loading...</h4>
-                <span class="typing-indicator" id="typing-indicator">Online</span>
+                <div class="chat-avatar" id="chat-avatar">
+                    <span id="chat-emoji">👤</span>
+                </div>
+                <div>
+                    <h4 id="chat-with-name">Loading...</h4>
+                    <span class="typing-indicator" id="typing-indicator">Online</span>
+                </div>
             </div>
             
-            <div class="chat-actions">
-                <button class="chat-action-btn" onclick="toggleFavorite()">
-                    <i class="far fa-star" id="favorite-btn"></i>
-                </button>
-                <button class="chat-action-btn" onclick="showProfileDetails()">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Date Separator -->
-        <div class="date-separator">
-            <span>Today</span>
+            <button class="close-btn" onclick="showDiscovery()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
         
         <div id="chat-box" class="chat-box">
-            <!-- Messages will be inserted here by JavaScript -->
             <div class="empty-chat" id="empty-chat">
                 <i class="fas fa-comments"></i>
                 <p>Start the conversation! Say hello 👋</p>
@@ -142,48 +138,34 @@
         </div>
         
         <div class="chat-input">
-            <button class="emoji-btn" onclick="toggleEmojiPicker()">
-                <i class="far fa-smile"></i>
-            </button>
-            
-            <input type="text" id="msg-input" placeholder="Type a message..." 
-                   onkeypress="if(event.key === 'Enter') sendMessage()">
-            
-            <button class="send-btn" onclick="sendMessage()" id="send-btn">
+            <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off">
+            <button class="send-btn" onclick="sendMessage()">
                 <i class="fas fa-paper-plane"></i>
             </button>
-            
-            <!-- Quick Reply Suggestions -->
-            <div class="quick-replies" id="quick-replies">
-                <button class="quick-reply" onclick="useQuickReply('Hi there! 👋')">Hi there! 👋</button>
-                <button class="quick-reply" onclick="useQuickReply('How are you?')">How are you?</button>
-                <button class="quick-reply" onclick="useQuickReply('Wanna grab coffee? ☕')">Coffee? ☕</button>
+        </div>
+        
+        <div class="app-footer">
+            <div class="footer-links">
+                <a href="privacy.html" target="_blank">Privacy</a>
+                <span class="footer-divider">•</span>
+                <a href="terms.html" target="_blank">Terms</a>
+                <span class="footer-divider">•</span>
+                <a href="safety.html" target="_blank">Safety</a>
+                <span class="footer-divider">•</span>
+                <a href="faq.html" target="_blank">FAQ</a>
             </div>
         </div>
     </div>
 
-    <!-- ====== MODALS & OVERLAYS ====== -->
-    
-    <!-- Match Animation Overlay -->
+    <!-- Match Overlay -->
     <div class="match-overlay hidden" id="match-overlay">
         <div class="match-content">
             <div class="match-heart">💝</div>
             <h1 class="match-title">It's a Match!</h1>
-            <p class="match-text" id="match-text">You matched with Alex!</p>
-            
-            <div class="matched-users">
-                <div class="user-avatar">
-                    <span id="user1-emoji">👤</span>
-                </div>
-                <div class="hearts-between">❤️</div>
-                <div class="user-avatar">
-                    <span id="user2-emoji">👤</span>
-                </div>
-            </div>
-            
+            <p class="match-text" id="match-text"></p>
             <div class="match-actions">
                 <button class="match-btn primary" onclick="startChatAfterMatch()">
-                    <i class="fas fa-comment"></i> Send Message
+                    Send Message
                 </button>
                 <button class="match-btn secondary" onclick="closeMatch()">
                     Keep Swiping
@@ -191,81 +173,31 @@
             </div>
         </div>
     </div>
-    
-    <!-- Loading Overlay -->
-    <div class="loading-overlay hidden" id="loading-overlay">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <p id="loading-text">Loading matches...</p>
-        </div>
-    </div>
-    
-    <!-- Notification Toast -->
-    <div class="notification-toast hidden" id="notification-toast">
-        <div class="toast-content">
-            <i class="toast-icon" id="toast-icon">💝</i>
-            <span id="toast-message">New match!</span>
-        </div>
-    </div>
-    
-    <!-- Floating Action Button -->
-    <div class="fab hidden" id="fab" onclick="toggleFabMenu()">
-        <i class="fas fa-plus"></i>
-    </div>
-    
-    <!-- FAB Menu -->
-    <div class="fab-menu hidden" id="fab-menu">
-        <button class="fab-item" onclick="toggleTheme()">
-            <i class="fas fa-moon"></i> Dark Mode
-        </button>
-        <button class="fab-item" onclick="showMatchesList()">
-            <i class="fas fa-heart"></i> My Matches
-        </button>
-        <button class="fab-item" onclick="showProfile()">
-            <i class="fas fa-user"></i> My Profile
-        </button>
-        <button class="fab-item" onclick="showSettings()">
-            <i class="fas fa-cog"></i> Settings
-        </button>
-        <button class="fab-item" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-    </div>
-    
-    <!-- Emoji Picker -->
-    <div class="emoji-picker hidden" id="emoji-picker">
-        <div class="emoji-header">
-            <span>Emojis</span>
-            <button class="close-emoji" onclick="toggleEmojiPicker()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="emoji-grid">
-            <!-- Emojis will be added by JavaScript -->
-            <button class="emoji" onclick="insertEmoji('😊')">😊</button>
-            <button class="emoji" onclick="insertEmoji('❤️')">❤️</button>
-            <button class="emoji" onclick="insertEmoji('😂')">😂</button>
-            <button class="emoji" onclick="insertEmoji('😍')">😍</button>
-            <button class="emoji" onclick="insertEmoji('👍')">👍</button>
-            <button class="emoji" onclick="insertEmoji('🙏')">🙏</button>
-            <button class="emoji" onclick="insertEmoji('🎉')">🎉</button>
-            <button class="emoji" onclick="insertEmoji('☕')">☕</button>
-            <button class="emoji" onclick="insertEmoji('✈️')">✈️</button>
-            <button class="emoji" onclick="insertEmoji('⭐')">⭐</button>
-        </div>
-    </div>
 
-    <!-- Audio Elements (for sounds) -->
-    <audio id="match-sound" preload="auto">
+    <!-- Audio for sounds -->
+    <audio id="match-sound" preload="none">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="message-sound" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="swipe-sound" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
     </audio>
 
     <script src="script.js"></script>
+    <script>
+        // Enter key support
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('user-name');
+            const msgInput = document.getElementById('msg-input');
+            
+            if (nameInput) {
+                nameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') showDiscovery();
+                });
+            }
+            
+            if (msgInput) {
+                msgInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') sendMessage();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
