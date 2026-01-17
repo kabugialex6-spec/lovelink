@@ -1,132 +1,141 @@
-// ====== ENHANCED VERSION OF YOUR CODE ======
+// Love Link - Stable & Optimized
+console.log('Love Link loaded - Stable Version');
 
-// Your original profiles with enhancements
+// Profile data
 const profiles = [
-    { 
+    {
         id: 1,
-        name: "Sarah", 
-        age: 22, 
-        bio: "Love traveling and coffee. Let's chat!", 
-        img: "👩‍💼",
-        avatar: "https://i.pravatar.cc/400?img=5", 
+        name: "Sarah",
+        age: 22,
+        bio: "Love traveling and coffee. Let's chat!",
+        emoji: "👩‍💼",
         gender: "female",
         interests: ["Travel", "Coffee", "Photography", "Yoga"],
-        location: "New York",
-        online: true,
-        lastActive: "Just now"
+        online: true
     },
-    { 
+    {
         id: 2,
-        name: "Jessica", 
-        age: 24, 
-        bio: "Artist and dreamer. Looking for a muse.", 
-        img: "🎨",
-        avatar: "https://i.pravatar.cc/400?img=9", 
+        name: "Jessica",
+        age: 24,
+        bio: "Artist and dreamer. Looking for a muse.",
+        emoji: "🎨",
         gender: "female",
         interests: ["Painting", "Poetry", "Museums", "Wine"],
-        location: "Paris",
-        online: true,
-        lastActive: "5 min ago"
+        online: true
     },
-    { 
+    {
         id: 3,
-        name: "Mike", 
-        age: 26, 
-        bio: "Fitness enthusiast. Let's hit the gym!", 
-        img: "💪",
-        avatar: "https://i.pravatar.cc/400?img=11", 
+        name: "Mike",
+        age: 26,
+        bio: "Fitness enthusiast. Let's hit the gym!",
+        emoji: "💪",
         gender: "male",
         interests: ["Gym", "Nutrition", "Hiking", "Podcasts"],
-        location: "Los Angeles",
-        online: false,
-        lastActive: "2 hours ago"
+        online: false
     },
-    { 
+    {
         id: 4,
-        name: "Kevin", 
-        age: 23, 
-        bio: "Gamer and tech geek. Let's play!", 
-        img: "🎮",
-        avatar: "https://i.pravatar.cc/400?img=13", 
+        name: "Kevin",
+        age: 23,
+        bio: "Gamer and tech geek. Let's play!",
+        emoji: "🎮",
         gender: "male",
         interests: ["Gaming", "Programming", "Anime", "Pizza"],
-        location: "Tokyo",
-        online: true,
-        lastActive: "Just now"
+        online: true
     },
-    { 
+    {
         id: 5,
-        name: "Alex", 
-        age: 25, 
-        bio: "Musician and foodie. Always up for an adventure!", 
-        img: "🎸",
-        avatar: "https://i.pravatar.cc/400?img=15", 
+        name: "Alex",
+        age: 25,
+        bio: "Musician and foodie. Always up for an adventure!",
+        emoji: "🎸",
         gender: "male",
         interests: ["Music", "Cooking", "Road Trips", "Comedy"],
-        location: "Austin",
-        online: true,
-        lastActive: "Just now"
-    },
-    { 
-        id: 6,
-        name: "Maya", 
-        age: 27, 
-        bio: "Digital nomad and dog lover. Let's explore together!", 
-        img: "🌍",
-        avatar: "https://i.pravatar.cc/400?img=17", 
-        gender: "female",
-        interests: ["Travel", "Dogs", "Startups", "Surfing"],
-        location: "Bali",
-        online: false,
-        lastActive: "Yesterday"
+        online: true
     }
 ];
 
-// Your original variables with enhancements
-let currentIndex = 0;
-let currentMatch = null;
+// App state
 let currentUser = null;
-let matches = JSON.parse(localStorage.getItem('loveLinkMatches')) || [];
-let messages = JSON.parse(localStorage.getItem('loveLinkMessages')) || {};
-let likesGiven = JSON.parse(localStorage.getItem('loveLinkLikes')) || [];
+let currentProfileIndex = 0;
+let currentMatch = null;
+let matches = [];
+let messages = {};
 
-// Initialize the app
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if user was already logged in
-    const savedUser = localStorage.getItem('loveLinkUser');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('discovery-screen').classList.remove('hidden');
-        showFab();
-        renderProfile();
-        updateMatchCount();
+// Initialize app
+function initApp() {
+    console.log('Initializing Love Link...');
+    
+    // Load saved data
+    try {
+        const savedUser = localStorage.getItem('loveLinkUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showScreen('discovery-screen');
+            renderProfile();
+            updateMatchCount();
+        }
+        
+        const savedMatches = localStorage.getItem('loveLinkMatches');
+        if (savedMatches) {
+            matches = JSON.parse(savedMatches);
+        }
+        
+        const savedMessages = localStorage.getItem('loveLinkMessages');
+        if (savedMessages) {
+            messages = JSON.parse(savedMessages);
+        }
+    } catch (e) {
+        console.log('Error loading saved data:', e);
+        // Reset to defaults
+        matches = [];
+        messages = {};
     }
     
-    // Initialize event listeners
-    initEventListeners();
-    loadUnreadMessages();
-});
+    // Setup event listeners
+    setupEventListeners();
+    
+    console.log('App initialized successfully');
+}
 
-// ====== ENHANCED FUNCTIONS (Building on yours) ======
+// Show a specific screen
+function showScreen(screenId) {
+    // Hide all screens
+    const screens = ['login-screen', 'discovery-screen', 'chat-screen'];
+    screens.forEach(id => {
+        const screen = document.getElementById(id);
+        if (screen) screen.classList.add('hidden');
+    });
+    
+    // Show requested screen
+    const screen = document.getElementById(screenId);
+    if (screen) {
+        screen.classList.remove('hidden');
+    }
+    
+    // Update match count if showing discovery
+    if (screenId === 'discovery-screen') {
+        updateMatchCount();
+    }
+}
 
-// Your showDiscovery function with enhancements
+// Login/Enter app
 function showDiscovery() {
     const name = document.getElementById('user-name').value.trim();
     const genderPref = document.getElementById('user-gender').value;
     
     if (!name) {
-        showNotification("Please enter your name!", "error");
+        alert("Please enter your name!");
         document.getElementById('user-name').focus();
         return;
     }
     
     if (!genderPref) {
-        showNotification("Please select who you're looking for!", "error");
+        alert("Please select who you're looking for!");
         return;
     }
     
-    // Save user data
+    // Save user
     currentUser = {
         id: Date.now(),
         name: name,
@@ -134,334 +143,245 @@ function showDiscovery() {
         joinDate: new Date().toISOString()
     };
     
-    localStorage.setItem('loveLinkUser', JSON.stringify(currentUser));
+    try {
+        localStorage.setItem('loveLinkUser', JSON.stringify(currentUser));
+    } catch (e) {
+        console.log('Error saving user:', e);
+    }
     
-    // Smooth transition
-    const loginScreen = document.getElementById('login-screen');
-    loginScreen.style.opacity = '0';
-    loginScreen.style.transform = 'translateY(-20px)';
-    
-    setTimeout(() => {
-        loginScreen.classList.add('hidden');
-        document.getElementById('discovery-screen').classList.remove('hidden');
-        
-        // Initialize discovery screen
-        showFab();
-        renderProfile();
-        updateMatchCount();
-        showNotification(`Welcome to Love Link, ${name}! ❤️`, "success");
-        
-        // Reset styles
-        setTimeout(() => {
-            loginScreen.style.opacity = '1';
-            loginScreen.style.transform = 'translateY(0)';
-        }, 300);
-    }, 300);
+    showScreen('discovery-screen');
+    renderProfile();
+    showNotification(`Welcome, ${name}! ❤️`);
 }
 
-// Your renderProfile function with enhancements
+// Go back to login
+function showLogin() {
+    showScreen('login-screen');
+}
+
+// Render current profile
 function renderProfile() {
-    const genderPref = currentUser ? currentUser.genderPreference : 
-                     document.getElementById('user-gender').value;
+    if (!currentUser) return;
     
-    const filtered = profiles.filter(p => p.gender === genderPref);
+    const filtered = profiles.filter(p => p.gender === currentUser.genderPreference);
     
     if (filtered.length === 0) {
         showNoProfiles();
         return;
     }
     
-    if (currentIndex >= filtered.length) currentIndex = 0;
-    currentMatch = filtered[currentIndex];
-    
-    // Update profile card with new elements
-    const profileEmoji = document.getElementById('profile-emoji');
-    const discName = document.getElementById('disc-name');
-    const discAge = document.getElementById('disc-age');
-    const discBio = document.getElementById('disc-bio');
-    const discInterests = document.getElementById('disc-interests');
-    const profilesLeft = document.getElementById('profiles-left');
-    const swipeProgress = document.getElementById('swipe-progress');
-    
-    if (profileEmoji) profileEmoji.textContent = currentMatch.img;
-    if (discName) discName.textContent = currentMatch.name;
-    if (discAge) discAge.textContent = currentMatch.age;
-    if (discBio) discBio.textContent = currentMatch.bio;
-    
-    // Update profile image (keep your original image loading)
-    const discImg = document.getElementById('disc-img');
-    if (discImg && discImg.tagName === 'IMG') {
-        discImg.src = currentMatch.avatar;
-        discImg.alt = `${currentMatch.name}'s profile`;
+    // Loop through profiles
+    if (currentProfileIndex >= filtered.length) {
+        currentProfileIndex = 0;
     }
     
+    currentMatch = filtered[currentProfileIndex];
+    
+    // Update UI
+    const nameEl = document.getElementById('disc-name');
+    const bioEl = document.getElementById('disc-bio');
+    const emojiEl = document.getElementById('profile-emoji');
+    const interestsEl = document.getElementById('disc-interests');
+    const progressBar = document.getElementById('progress-bar');
+    
+    if (nameEl) nameEl.textContent = `${currentMatch.name}, ${currentMatch.age}`;
+    if (bioEl) bioEl.textContent = currentMatch.bio;
+    if (emojiEl) emojiEl.textContent = currentMatch.emoji;
+    
     // Update interests
-    if (discInterests && currentMatch.interests) {
-        discInterests.innerHTML = currentMatch.interests
-            .map(interest => `<span class="interest-tag">${interest}</span>`)
+    if (interestsEl && currentMatch.interests) {
+        interestsEl.innerHTML = currentMatch.interests
+            .map(interest => `<span>${interest}</span>`)
             .join('');
     }
     
     // Update progress
-    if (profilesLeft) {
-        const remaining = Math.max(0, filtered.length - currentIndex - 1);
-        profilesLeft.textContent = remaining;
+    if (progressBar) {
+        const progress = ((currentProfileIndex + 1) / filtered.length) * 100;
+        progressBar.style.width = `${progress}%`;
     }
     
-    if (swipeProgress) {
-        const progress = ((currentIndex + 1) / filtered.length) * 100;
-        swipeProgress.style.width = `${progress}%`;
-    }
-    
-    // Update status indicator
-    updateStatusIndicator(currentMatch.online);
-}
-
-// Enhanced nextProfile with animation
-function nextProfile() {
-    const card = document.getElementById('profile-card');
-    if (card) {
-        card.classList.add('swipe-left');
-        
-        // Play swipe sound
-        playSound('swipe');
-        
-        setTimeout(() => {
-            card.classList.remove('swipe-left');
-            currentIndex++;
-            renderProfile();
-            
-            // Show notification if liked before
-            if (likesGiven.includes(currentMatch.id)) {
-                showNotification(`You liked ${currentMatch.name} before! 💖`, "info");
-            }
-        }, 300);
+    // Update status
+    const statusEl = document.querySelector('.status');
+    if (statusEl) {
+        if (currentMatch.online) {
+            statusEl.innerHTML = '<i class="fas fa-circle"></i> Online now';
+            statusEl.className = 'status online';
+        } else {
+            statusEl.innerHTML = '<i class="fas fa-circle"></i> Recently';
+            statusEl.className = 'status';
+        }
     }
 }
 
-// Your checkMatch function enhanced (now swipeRight)
+// Swipe left (dislike)
+function swipeLeft() {
+    currentProfileIndex++;
+    renderProfile();
+    showNotification('Profile passed');
+}
+
+// Swipe right (like)
 function swipeRight() {
-    const card = document.getElementById('profile-card');
-    if (card) {
-        card.classList.add('swipe-right');
-        playSound('swipe');
-        
-        // Add to likes
-        if (!likesGiven.includes(currentMatch.id)) {
-            likesGiven.push(currentMatch.id);
-            localStorage.setItem('loveLinkLikes', JSON.stringify(likesGiven));
+    // 50% chance of match
+    const isMatch = Math.random() > 0.5;
+    
+    if (isMatch) {
+        // Add to matches if not already matched
+        const alreadyMatched = matches.some(m => m.id === currentMatch.id);
+        if (!alreadyMatched) {
+            matches.push(currentMatch);
+            try {
+                localStorage.setItem('loveLinkMatches', JSON.stringify(matches));
+            } catch (e) {
+                console.log('Error saving matches:', e);
+            }
         }
         
-        setTimeout(() => {
-            card.classList.remove('swipe-right');
-            
-            // Simulate match (50% chance instead of 100% for realism)
-            const isMatch = Math.random() > 0.5;
-            
-            if (isMatch) {
-                // It's a match!
-                if (!matches.some(m => m.id === currentMatch.id)) {
-                    matches.push(currentMatch);
-                    localStorage.setItem('loveLinkMatches', JSON.stringify(matches));
-                }
-                
-                showMatchAnimation();
-            } else {
-                // Just liked, no match yet
-                showNotification(`You liked ${currentMatch.name}! 💖`, "info");
-                currentIndex++;
-                renderProfile();
-            }
-        }, 300);
-    }
-}
-
-// New: Super Like function
-function superLike() {
-    playSound('match'); // Special sound for super like
-    
-    // Add to matches directly (super like guarantees match in simulation)
-    if (!matches.some(m => m.id === currentMatch.id)) {
-        matches.push(currentMatch);
-        localStorage.setItem('loveLinkMatches', JSON.stringify(matches));
+        showMatchAnimation();
+    } else {
+        showNotification(`You liked ${currentMatch.name}! 💖`);
+        currentProfileIndex++;
+        renderProfile();
     }
     
-    // Show super like animation
-    const card = document.getElementById('profile-card');
-    if (card) {
-        card.classList.add('swipe-right');
-        card.style.boxShadow = '0 0 30px gold';
-        
-        setTimeout(() => {
-            card.classList.remove('swipe-right');
-            card.style.boxShadow = '';
-            showMatchAnimation(true); // true = super like
-        }, 400);
-    }
+    updateMatchCount();
 }
 
-// New: Show match animation
-function showMatchAnimation(isSuperLike = false) {
+// Show match animation
+function showMatchAnimation() {
     const overlay = document.getElementById('match-overlay');
     const matchText = document.getElementById('match-text');
-    const user1Emoji = document.getElementById('user1-emoji');
-    const user2Emoji = document.getElementById('user2-emoji');
     
-    if (overlay && matchText && user1Emoji && user2Emoji) {
-        matchText.textContent = isSuperLike 
-            ? `You SUPER LIKED ${currentMatch.name}! 💫` 
-            : `You matched with ${currentMatch.name}!`;
-        
-        user1Emoji.textContent = '👤'; // Current user emoji
-        user2Emoji.textContent = currentMatch.img;
-        
+    if (overlay && matchText) {
+        matchText.textContent = `You matched with ${currentMatch.name}!`;
         overlay.classList.remove('hidden');
         
-        // Play match sound
-        playSound('match');
+        // Play sound if available
+        playMatchSound();
         
         // Add confetti
         createConfetti();
     }
 }
 
-// Your checkMatch function (renamed for clarity)
+// Start chat after match
 function startChatAfterMatch() {
-    document.getElementById('match-overlay').classList.add('hidden');
-    document.getElementById('discovery-screen').classList.add('hidden');
-    document.getElementById('chat-screen').classList.remove('hidden');
+    const overlay = document.getElementById('match-overlay');
+    if (overlay) overlay.classList.add('hidden');
     
-    // Set up chat
-    const chatWithName = document.getElementById('chat-with-name');
+    showScreen('chat-screen');
+    
+    // Setup chat
+    const chatName = document.getElementById('chat-with-name');
     const chatEmoji = document.getElementById('chat-emoji');
-    const chatAvatar = document.getElementById('chat-avatar');
     
-    if (chatWithName) chatWithName.textContent = currentMatch.name;
-    if (chatEmoji) chatEmoji.textContent = currentMatch.img;
-    if (chatAvatar && chatAvatar.tagName === 'IMG') {
-        chatAvatar.src = currentMatch.avatar;
-    }
+    if (chatName) chatName.textContent = currentMatch.name;
+    if (chatEmoji) chatEmoji.textContent = currentMatch.emoji;
     
-    // Load chat history
+    // Load chat messages
     loadChat(currentMatch.id);
     
-    // Hide empty chat state if we have messages
-    const emptyChat = document.getElementById('empty-chat');
-    if (emptyChat && getMessagesForProfile(currentMatch.id).length > 0) {
-        emptyChat.style.display = 'none';
-    }
-    
-    // Add welcome message if first time
-    if (getMessagesForProfile(currentMatch.id).length === 0) {
-        setTimeout(() => {
-            addMessage(
-                currentMatch.id,
-                `Hey there! I'm ${currentMatch.name}. Thanks for matching with me! 😊`,
-                false
-            );
-        }, 1000);
-    }
+    // Add welcome message
+    setTimeout(() => {
+        addMessage(currentMatch.id, `Hey there! I'm ${currentMatch.name}. Thanks for matching! 😊`, false);
+    }, 1000);
 }
 
-// Close match overlay and continue
+// Close match overlay
 function closeMatch() {
-    document.getElementById('match-overlay').classList.add('hidden');
-    currentIndex++;
+    const overlay = document.getElementById('match-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    
+    currentProfileIndex++;
     renderProfile();
-    updateMatchCount();
 }
 
-// Your sendMessage function enhanced
+// Send message
 function sendMessage() {
     const input = document.getElementById('msg-input');
     const text = input.value.trim();
     
-    if (!text) return;
-    
-    if (!currentMatch) {
-        showNotification("No active chat!", "error");
-        return;
-    }
+    if (!text || !currentMatch) return;
     
     // Add message
     addMessage(currentMatch.id, text, true);
     input.value = "";
     
-    // Play message sound
-    playSound('message');
+    // Show typing indicator
+    const typingEl = document.getElementById('typing-indicator');
+    if (typingEl) {
+        typingEl.textContent = 'typing...';
+    }
     
-    // Simulate typing indicator
-    showTypingIndicator(true);
-    
-    // Simulate reply after delay (1-3 seconds)
+    // Simulate reply
     setTimeout(() => {
-        showTypingIndicator(false);
+        if (typingEl) {
+            typingEl.textContent = 'Online';
+        }
         
         const replies = [
             "Hey! How are you? 😊",
             "I'm so glad we matched!",
             "What are you up to today?",
-            "You have a great profile!",
             "That's interesting! Tell me more.",
-            "I feel the same way!",
             "We should meet up sometime!",
-            "What's your favorite thing to do on weekends?",
-            "I love your sense of humor! 😄",
-            "Can't wait to get to know you better!"
+            "What's your favorite thing to do on weekends?"
         ];
         
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-        addMessage(currentMatch.id, randomReply, false);
-        
-        // Play received message sound
-        playSound('message');
-    }, 1000 + Math.random() * 2000);
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        addMessage(currentMatch.id, reply, false);
+    }, 1000 + Math.random() * 1500);
 }
 
-// Your addMessage function enhanced
+// Add message to chat
 function addMessage(profileId, text, isSent) {
-    const message = {
-        id: Date.now(),
-        profileId: profileId,
-        text: text,
-        sent: isSent,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        timestamp: Date.now(),
-        read: isSent // Sent messages are read immediately
-    };
-    
-    // Initialize messages array for this profile if it doesn't exist
+    // Initialize messages array for profile
     if (!messages[profileId]) {
         messages[profileId] = [];
     }
     
+    const message = {
+        id: Date.now(),
+        text: text,
+        sent: isSent,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: Date.now()
+    };
+    
     messages[profileId].push(message);
     
     // Save to localStorage
-    localStorage.setItem('loveLinkMessages', JSON.stringify(messages));
-    
-    // Update chat display if this is the current chat
-    const currentChatProfile = document.getElementById('chat-with-name');
-    if (currentChatProfile && currentMatch && currentMatch.id === profileId) {
-        displayMessage(message);
+    try {
+        localStorage.setItem('loveLinkMessages', JSON.stringify(messages));
+    } catch (e) {
+        console.log('Error saving messages:', e);
     }
     
-    // Update unread count
-    updateUnreadCount();
+    // Display if this is the current chat
+    if (currentMatch && profileId === currentMatch.id) {
+        displayMessage(message);
+    }
 }
 
-// New: Display a single message
+// Display a message in chat
 function displayMessage(message) {
     const chatBox = document.getElementById('chat-box');
     const emptyChat = document.getElementById('empty-chat');
     
-    if (emptyChat) emptyChat.style.display = 'none';
+    if (!chatBox) return;
     
+    // Hide empty chat state
+    if (emptyChat) {
+        emptyChat.style.display = 'none';
+    }
+    
+    // Create message element
     const messageDiv = document.createElement('div');
     messageDiv.className = `msg ${message.sent ? 'sent' : 'received'}`;
     
     messageDiv.innerHTML = `
-        <div class="msg-text">${message.text}</div>
+        <div>${message.text}</div>
         <div class="msg-time">${message.time}</div>
     `;
     
@@ -469,7 +389,7 @@ function displayMessage(message) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// New: Load chat for a specific profile
+// Load chat for a profile
 function loadChat(profileId) {
     const chatBox = document.getElementById('chat-box');
     const emptyChat = document.getElementById('empty-chat');
@@ -479,345 +399,89 @@ function loadChat(profileId) {
     // Clear chat box
     chatBox.innerHTML = '';
     
-    // Show empty state if no messages
-    const profileMessages = getMessagesForProfile(profileId);
+    // Show empty state or messages
+    const profileMessages = messages[profileId] || [];
+    
     if (profileMessages.length === 0 && emptyChat) {
         emptyChat.style.display = 'flex';
     } else {
-        // Display all messages
         profileMessages.forEach(msg => displayMessage(msg));
-    }
-}
-
-// New: Get messages for a profile
-function getMessagesForProfile(profileId) {
-    return messages[profileId] || [];
-}
-
-// ====== NEW FEATURE FUNCTIONS ======
-
-// Notification system
-function showNotification(message, type = "info") {
-    const toast = document.getElementById('notification-toast');
-    const toastMessage = document.getElementById('toast-message');
-    const toastIcon = document.getElementById('toast-icon');
-    
-    if (!toast || !toastMessage || !toastIcon) return;
-    
-    // Set message and icon based on type
-    toastMessage.textContent = message;
-    
-    switch(type) {
-        case "success":
-            toastIcon.textContent = "✅";
-            toast.style.backgroundColor = "#4CAF50";
-            break;
-        case "error":
-            toastIcon.textContent = "❌";
-            toast.style.backgroundColor = "#f44336";
-            break;
-        case "warning":
-            toastIcon.textContent = "⚠️";
-            toast.style.backgroundColor = "#ff9800";
-            break;
-        default:
-            toastIcon.textContent = "💝";
-            toast.style.backgroundColor = "#ff4b6e";
-    }
-    
-    // Show toast
-    toast.classList.remove('hidden');
-    
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 3000);
-}
-
-// FAB (Floating Action Button) functions
-function showFab() {
-    const fab = document.getElementById('fab');
-    if (fab) fab.classList.remove('hidden');
-}
-
-function toggleFabMenu() {
-    const fabMenu = document.getElementById('fab-menu');
-    if (fabMenu) fabMenu.classList.toggle('hidden');
-}
-
-function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
-    const isDark = document.body.classList.contains('dark-theme');
-    localStorage.setItem('loveLinkTheme', isDark ? 'dark' : 'light');
-    showNotification(`Switched to ${isDark ? 'dark' : 'light'} mode`);
-    toggleFabMenu();
-}
-
-function showMatchesList() {
-    if (matches.length === 0) {
-        showNotification("No matches yet! Keep swiping 💕", "info");
-        toggleFabMenu();
-        return;
-    }
-    
-    // Create matches modal
-    const modal = document.createElement('div');
-    modal.className = 'match-overlay';
-    modal.innerHTML = `
-        <div class="match-content" style="max-width: 400px; padding: 20px;">
-            <h2 style="color: #ff4b6e; margin-bottom: 20px;">Your Matches 💝</h2>
-            <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
-                ${matches.map(match => `
-                    <div onclick="openMatchChat(${match.id})" 
-                         style="display: flex; align-items: center; padding: 15px; 
-                                background: #f9f9f9; margin: 10px 0; border-radius: 15px; 
-                                cursor: pointer; transition: 0.3s;">
-                        <div style="font-size: 2rem; margin-right: 15px; background: #ff4b6e; 
-                                    color: white; width: 50px; height: 50px; border-radius: 50%; 
-                                    display: flex; align-items: center; justify-content: center;">
-                            ${match.img}
-                        </div>
-                        <div style="flex: 1;">
-                            <strong>${match.name}, ${match.age}</strong>
-                            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">
-                                ${match.interests.slice(0, 2).join(', ')}
-                            </p>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-            <button class="btn-main" onclick="this.parentElement.parentElement.remove()">
-                Close
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    toggleFabMenu();
-}
-
-function openMatchChat(profileId) {
-    const match = profiles.find(p => p.id === profileId);
-    if (!match) return;
-    
-    // Remove matches modal
-    document.querySelector('.match-overlay')?.remove();
-    
-    // Switch to chat
-    currentMatch = match;
-    document.getElementById('discovery-screen').classList.add('hidden');
-    document.getElementById('chat-screen').classList.remove('hidden');
-    
-    // Set up chat
-    const chatWithName = document.getElementById('chat-with-name');
-    const chatEmoji = document.getElementById('chat-emoji');
-    
-    if (chatWithName) chatWithName.textContent = match.name;
-    if (chatEmoji) chatEmoji.textContent = match.img;
-    
-    loadChat(profileId);
-}
-
-function showProfile() {
-    if (!currentUser) return;
-    
-    const modal = document.createElement('div');
-    modal.className = 'match-overlay';
-    modal.innerHTML = `
-        <div class="match-content" style="max-width: 400px; padding: 20px;">
-            <h2 style="color: #ff4b6e; margin-bottom: 20px;">Your Profile 👤</h2>
-            <div style="background: #f9f9f9; padding: 25px; border-radius: 20px; margin-bottom: 20px;">
-                <div style="font-size: 4rem; text-align: center; margin-bottom: 20px;">👤</div>
-                <h3 style="text-align: center; margin-bottom: 10px;">${currentUser.name}</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 20px;">
-                    Looking for: ${currentUser.genderPreference === 'male' ? 'Men' : 'Women'}
-                </p>
-                <div style="display: flex; justify-content: space-around; text-align: center;">
-                    <div>
-                        <div style="font-size: 1.5rem; color: #ff4b6e; font-weight: bold;">${matches.length}</div>
-                        <div style="font-size: 0.9rem; color: #666;">Matches</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 1.5rem; color: #ff4b6e; font-weight: bold;">${likesGiven.length}</div>
-                        <div style="font-size: 0.9rem; color: #666;">Likes</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 1.5rem; color: #ff4b6e; font-weight: bold;">${Object.keys(messages).length}</div>
-                        <div style="font-size: 0.9rem; color: #666;">Chats</div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-main" onclick="this.parentElement.parentElement.remove()">
-                Close
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    toggleFabMenu();
-}
-
-function showSettings() {
-    showNotification("Settings feature coming soon!", "info");
-    toggleFabMenu();
-}
-
-function logout() {
-    if (confirm("Are you sure you want to logout?")) {
-        localStorage.removeItem('loveLinkUser');
-        location.reload();
-    }
-}
-
-// Quick reply function
-function useQuickReply(text) {
-    const input = document.getElementById('msg-input');
-    input.value = text;
-    input.focus();
-}
-
-// Emoji picker functions
-function toggleEmojiPicker() {
-    const picker = document.getElementById('emoji-picker');
-    if (picker) picker.classList.toggle('hidden');
-}
-
-function insertEmoji(emoji) {
-    const input = document.getElementById('msg-input');
-    input.value += emoji;
-    input.focus();
-}
-
-// Sound functions
-function playSound(type) {
-    try {
-        const audio = document.getElementById(`${type}-sound`);
-        if (audio) {
-            audio.currentTime = 0;
-            audio.play().catch(e => console.log("Audio play failed:", e));
-        }
-    } catch (e) {
-        // Sound not supported or blocked
-    }
-}
-
-// Typing indicator
-function showTypingIndicator(show) {
-    const indicator = document.getElementById('typing-indicator');
-    if (indicator) {
-        indicator.textContent = show ? "typing..." : "Online";
     }
 }
 
 // Update match count
 function updateMatchCount() {
-    const matchCount = document.getElementById('match-count');
-    if (matchCount) {
-        matchCount.textContent = `${matches.length} match${matches.length !== 1 ? 'es' : ''}`;
+    const countEl = document.getElementById('match-count');
+    if (countEl) {
+        countEl.textContent = `${matches.length} match${matches.length !== 1 ? 'es' : ''}`;
     }
 }
 
-// Update unread messages count
-function updateUnreadCount() {
-    // This would update a badge on the FAB
-    const fab = document.getElementById('fab');
-    if (fab) {
-        let unreadCount = 0;
-        
-        // Count unread messages (received messages not sent by user)
-        for (const profileId in messages) {
-            unreadCount += messages[profileId].filter(m => !m.sent && !m.read).length;
-        }
-        
-        // Update FAB badge
-        const existingBadge = fab.querySelector('.fab-badge');
-        if (unreadCount > 0) {
-            if (!existingBadge) {
-                const badge = document.createElement('span');
-                badge.className = 'fab-badge';
-                badge.textContent = unreadCount;
-                fab.appendChild(badge);
-            } else {
-                existingBadge.textContent = unreadCount;
+// Show notification
+function showNotification(message) {
+    // Simple notification - could be enhanced
+    console.log('Notification:', message);
+    
+    // Create simple toast
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4b6e;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        z-index: 1000;
+        animation: fadeInOut 3s;
+    `;
+    
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Add CSS for animation
+    if (!document.querySelector('#toast-animation')) {
+        const style = document.createElement('style');
+        style.id = 'toast-animation';
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateY(-20px); }
+                10% { opacity: 1; transform: translateY(0); }
+                90% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(-20px); }
             }
-        } else if (existingBadge) {
-            existingBadge.remove();
-        }
-    }
-}
-
-// Load unread messages on startup
-function loadUnreadMessages() {
-    updateUnreadCount();
-}
-
-// Update status indicator
-function updateStatusIndicator(isOnline) {
-    const statusElement = document.querySelector('.status');
-    if (statusElement) {
-        if (isOnline) {
-            statusElement.className = 'status online';
-            statusElement.innerHTML = '<i class="fas fa-circle"></i> Online now';
-        } else {
-            statusElement.className = 'status offline';
-            statusElement.innerHTML = '<i class="fas fa-circle"></i> Recently';
-        }
-    }
-}
-
-// Show no profiles state
-function showNoProfiles() {
-    const profileCard = document.getElementById('profile-card');
-    if (profileCard) {
-        profileCard.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-user-slash"></i>
-                <h3>No more profiles!</h3>
-                <p>Check back later for new matches.</p>
-                <button class="btn-main" onclick="location.reload()">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-            </div>
         `;
+        document.head.appendChild(style);
     }
-}
-
-// Initialize event listeners
-function initEventListeners() {
-    // Enter key for login
-    document.getElementById('user-name')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') showDiscovery();
-    });
     
-    // Enter key for chat
-    document.getElementById('msg-input')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage();
-    });
-    
-    // Click outside to close FAB menu
-    document.addEventListener('click', function(e) {
-        const fab = document.getElementById('fab');
-        const fabMenu = document.getElementById('fab-menu');
-        
-        if (fabMenu && !fabMenu.classList.contains('hidden') && 
-            !fab.contains(e.target) && 
-            !fabMenu.contains(e.target)) {
-            fabMenu.classList.add('hidden');
+    // Remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
         }
-    });
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('loveLinkTheme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
+    }, 3000);
+}
+
+// Play match sound
+function playMatchSound() {
+    try {
+        const audio = document.getElementById('match-sound');
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => {
+                console.log('Audio play failed:', e);
+            });
+        }
+    } catch (e) {
+        // Ignore audio errors
     }
 }
 
-// Confetti effect for matches
+// Create confetti effect
 function createConfetti() {
-    const colors = ['#ff4b6e', '#ff8fa3', '#ffb3c1', '#4CAF50', '#2196F3', '#FFD700'];
+    const colors = ['#ff4b6e', '#ff8fa3', '#ffb3c1', '#4CAF50', '#2196F3'];
     
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
         setTimeout(() => {
             const confetti = document.createElement('div');
             confetti.style.cssText = `
@@ -829,19 +493,23 @@ function createConfetti() {
                 top: -10px;
                 left: ${Math.random() * 100}vw;
                 z-index: 1001;
-                animation: confettiFall ${Math.random() * 2 + 1}s linear forwards;
+                animation: confettiFall ${Math.random() * 1 + 1}s linear forwards;
             `;
             
             document.body.appendChild(confetti);
             
-            setTimeout(() => confetti.remove(), 3000);
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, 2000);
         }, i * 50);
     }
     
-    // Add confetti animation style if not present
-    if (!document.querySelector('#confetti-style')) {
+    // Add confetti animation
+    if (!document.querySelector('#confetti-animation')) {
         const style = document.createElement('style');
-        style.id = 'confetti-style';
+        style.id = 'confetti-animation';
         style.textContent = `
             @keyframes confettiFall {
                 to {
@@ -854,9 +522,27 @@ function createConfetti() {
     }
 }
 
-// Back to login function
-function showLogin() {
-    document.getElementById('discovery-screen').classList.add('hidden');
-    document.getElementById('login-screen').classList.remove('hidden');
-    document.getElementById('fab').classList.add('hidden');
+// Show no profiles state
+function showNoProfiles() {
+    const profileCard = document.getElementById('profile-card');
+    if (profileCard) {
+        profileCard.innerHTML = `
+            <div style="padding: 40px; text-align: center; color: #666;">
+                <div style="font-size: 3rem; margin-bottom: 20px;">😔</div>
+                <h3>No more profiles!</h3>
+                <p style="margin-bottom: 20px;">Check back later for new matches.</p>
+                <button class="btn-main" onclick="location.reload()">
+                    Refresh
+                </button>
+            </div>
+        `;
+    }
 }
+
+// Setup event listeners
+function setupEventListeners() {
+    // Already handled in HTML inline
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', initApp);
