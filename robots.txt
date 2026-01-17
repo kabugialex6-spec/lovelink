@@ -1,19 +1,19 @@
-# robots.txt for Love Link Dating App
 User-agent: *
 Allow: /
 
-# Sitemap location
 Sitemap: https://kabugialex6-spec.github.io/lovelink/sitemap.xml
 
-# Disallow crawling of temporary or private files
+# Crawl delay to prevent server overload
+Crawl-delay: 2
+
+# Disallow crawling of any temporary or log files
 Disallow: /private/
 Disallow: /tmp/
-Disallow: /admin/
+Disallow: /logs/
+Disallow: /cache/
 
-# Allow all main pages
-Allow: /privacy
-Allow: /terms
-Allow: /safety
-Allow: /faq
-Allow: /about
-Allow: /contact
+# Allow all main content
+Allow: /*.html
+Allow: /*.css
+Allow: /*.js
+Allow: /*.xml
