@@ -4,86 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Love Link</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .privacy-content {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #fdf2f4;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
             max-width: 800px;
-            margin: 40px auto;
-            padding: 30px;
+            margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
         }
-        .privacy-content h1 {
-            color: #ff4b6e;
-            margin-bottom: 30px;
+        
+        .header {
             text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff4b6e;
         }
-        .privacy-section {
-            margin-bottom: 30px;
+        
+        .header h1 {
+            color: #ff4b6e;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
-        .privacy-section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        .privacy-section p {
+        
+        .header p {
             color: #666;
-            line-height: 1.6;
-            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: #ff4b6e;
             color: white;
             text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #ff4b6e;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .section li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .highlight {
+            background: rgba(255, 75, 110, 0.1);
+            padding: 15px;
             border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ff4b6e;
+        }
+        
+        .update-date {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="privacy-content">
-        <h1>Privacy Policy</h1>
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Love Link
+        </a>
         
-        <div class="privacy-section">
-            <h2>1. Information We Collect</h2>
-            <p>Love Link collects information you provide directly, including your name, age, gender preferences, and profile information. This information is used to provide our matching services.</p>
+        <div class="header">
+            <h1>Privacy Policy</h1>
+            <p>Your privacy is important to us</p>
         </div>
         
-        <div class="privacy-section">
-            <h2>2. How We Use Your Information</h2>
-            <p>We use your information to:</p>
+        <div class="section">
+            <h2>1. Information We Collect</h2>
+            <p>Love Link collects information that you provide directly when using our service:</p>
             <ul>
-                <li>Create and maintain your account</li>
-                <li>Show you potential matches</li>
-                <li>Enable chat functionality</li>
-                <li>Improve our services</li>
-                <li>Send you important updates</li>
+                <li><strong>Profile Information:</strong> Your name, age, gender preferences, and interests</li>
+                <li><strong>Interaction Data:</strong> Your swipes, matches, and messages</li>
+                <li><strong>Technical Information:</strong> Device information and usage statistics</li>
             </ul>
         </div>
         
-        <div class="privacy-section">
+        <div class="section">
+            <h2>2. How We Use Your Information</h2>
+            <p>We use your information to:</p>
+            <ul>
+                <li>Create and maintain your dating profile</li>
+                <li>Show you compatible matches based on your preferences</li>
+                <li>Enable secure messaging between matched users</li>
+                <li>Improve our matching algorithms and service quality</li>
+                <li>Send important service updates and notifications</li>
+                <li>Ensure the safety and security of our community</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="highlight">
+                <p><strong>Important:</strong> Your personal messages and specific profile details are never shared with third parties for advertising purposes.</p>
+            </div>
+        </div>
+        
+        <div class="section">
             <h2>3. Data Security</h2>
-            <p>We implement industry-standard security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.</p>
+            <p>We implement industry-standard security measures to protect your information:</p>
+            <ul>
+                <li>All data is encrypted during transmission</li>
+                <li>Regular security audits and updates</li>
+                <li>Limited access to personal information</li>
+                <li>Secure storage practices</li>
+            </ul>
+            <p>While we strive to protect your data, no security system is impenetrable.</p>
         </div>
         
-        <div class="privacy-section">
-            <h2>4. Your Rights</h2>
-            <p>You can access, correct, or delete your personal information at any time through your account settings. You may also contact us to exercise your data protection rights.</p>
+        <div class="section">
+            <h2>4. Your Rights & Choices</h2>
+            <p>You have control over your data:</p>
+            <ul>
+                <li>Access and download your personal information</li>
+                <li>Correct or update your profile information</li>
+                <li>Delete your account and associated data</li>
+                <li>Opt-out of non-essential communications</li>
+                <li>Export your conversation history</li>
+            </ul>
         </div>
         
-        <div class="privacy-section">
-            <h2>5. Contact Us</h2>
-            <p>If you have questions about this Privacy Policy, please contact us at privacy@lovelink.example.com</p>
+        <div class="section">
+            <h2>5. Data Retention</h2>
+            <p>We retain your information for as long as your account is active or as needed to provide services. When you delete your account, we remove your personal data from our active databases within 30 days.</p>
         </div>
         
-        <div class="privacy-section">
+        <div class="section">
+            <h2>6. Contact Us</h2>
+            <p>If you have questions about this Privacy Policy or your data:</p>
+            <ul>
+                <li><strong>Email:</strong> privacy@lovelink.example.com</li>
+                <li><strong>Response Time:</strong> We aim to respond within 48 hours</li>
+            </ul>
+        </div>
+        
+        <div class="update-date">
             <p><strong>Last Updated:</strong> January 17, 2026</p>
+            <p>This policy may be updated periodically. We will notify you of significant changes.</p>
         </div>
-        
-        <a href="/lovelink/" class="back-btn">← Back to Love Link</a>
     </div>
 </body>
 </html>
