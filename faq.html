@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Love Link</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #fdf2f4; color: #333; line-height: 1.6; padding: 20px; min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #ff4b6e; font-size: 2.5rem; margin-bottom: 10px; }
+        .back-button { display: inline-flex; align-items: center; gap: 8px; background: #ff4b6e; color: white; text-decoration: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; margin-bottom: 30px; }
+        .faq-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #eee; }
+        .faq-question { color: #ff4b6e; font-size: 1.2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .faq-answer { color: #555; padding-left: 34px; }
+        @media (max-width: 768px) { .container { padding: 25px; } }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            const answer = document.getElementById('answer-' + id);
+            const icon = document.querySelector('#question-' + id + ' i');
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                answer.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Love Link</a>
+        <div class="header"><h1><i class="fas fa-question-circle"></i> Frequently Asked Questions</h1></div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-1" onclick="toggleAnswer(1)">
+                <i class="fas fa-chevron-down"></i> How does Love Link work?
+            </div>
+            <div class="faq-answer" id="answer-1" style="display: none;">
+                Love Link connects people based on mutual interests. Create a profile, browse matches, swipe right to like someone, and if they like you back, it's a match! You can then start chatting.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-2" onclick="toggleAnswer(2)">
+                <i class="fas fa-chevron-down"></i> Is Love Link free to use?
+            </div>
+            <div class="faq-answer" id="answer-2" style="display: none;">
+                Yes! Love Link is completely free. You can create a profile, browse matches, and chat with your matches without any cost.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-3" onclick="toggleAnswer(3)">
+                <i class="fas fa-chevron-down"></i> How do I delete my account?
+            </div>
+            <div class="faq-answer" id="answer-3" style="display: none;">
+                Currently, you can clear your data by clearing your browser's localStorage. We're working on an account deletion feature for future updates.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-4" onclick="toggleAnswer(4)">
+                <i class="fas fa-chevron-down"></i> Can I report inappropriate behavior?
+            </div>
+            <div class="faq-answer" id="answer-4" style="display: none;">
+                Absolutely. Your safety is our priority. If someone makes you feel uncomfortable or violates our guidelines, please email us at report@lovelink.example.com with details.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-5" onclick="toggleAnswer(5)">
+                <i class="fas fa-chevron-down"></i> How are matches determined?
+            </div>
+            <div class="faq-answer" id="answer-5" style="display: none;">
+                Matches are based on the gender preference you select. When both users swipe right on each other's profiles, it creates a match allowing you to chat.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" id="question-6" onclick="toggleAnswer(6)">
+                <i class="fas fa-chevron-down"></i> What happens if I unmatched someone?
+            </div>
+            <div class="faq-answer" id="answer-6" style="display: none;">
+                If you unmatched someone, the chat will be archived. You won't see their profile again in your discovery feed unless you reset your preferences.
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666;">
+            <p>Still have questions? Contact us at support@lovelink.example.com</p>
+            <p>We typically respond within 24 hours.</p>
+        </div>
+    </div>
+</body>
+</html>
